@@ -21,5 +21,6 @@ This is a simple, one-page personal todo list manager.
 7. Whenever the collection changes, it should be refreshed automatically using Ajax.
 8. All saving and retrieving of data should be done via Ajax, using jQuery and any plugins you choose
    (use [jEditable][1], it will make some of this easy).
+9. All todo items must be saved in the database so that you can refresh the page and see the same items.
 
 [1]: http://www.appelsiini.net/projects/jeditable    
