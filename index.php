@@ -40,7 +40,6 @@ $app->path(
                 $todo->save();
                 return $todo->text;
             }
-
         }
     }
 );
