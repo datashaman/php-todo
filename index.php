@@ -26,21 +26,6 @@ $app->path(
 
 $app->path(
     '/save', function ($request) use ($app) {
-        if (preg_match('/todo-([0-9]*)$/', $request->post('id'), $matches)) {
-            $todoId = $matches[1];
-            $todo = ORM::for_table('todos')->find_one($todoId);
-
-            $text = $request->post('value');
-
-            if (empty($text)) {
-                $todo->delete();
-                return $app->response(200, $todo->as_array());
-            } else {
-                $todo->text = $text;
-                $todo->save();
-                return $todo->text;
-            }
-        }
     }
 );
 
@@ -75,6 +60,19 @@ $app->path(
         $app->param(
             'int', function($request, $todoId) use ($app) {
                 $todo = ORM::for_table('todos')->find_one($todoId);
+
+                $app->put(function ($request) use ($app, $todo) {
+                    $text = $request->post('value');
+
+                    if (empty($text)) {
+                        $todo->delete();
+                        return $app->response(200, $todo->as_array());
+                    } else {
+                        $todo->text = $text;
+                        $todo->save();
+                        return $todo->text;
+                    }
+                });
 
                 $app->delete(function ($request) use ($app, $todo) {
                     $todo->delete();

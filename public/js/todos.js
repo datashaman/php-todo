@@ -1,13 +1,22 @@
 jQuery(document).ready(function($) {
-    var loadTodos = function() {
-        $('#todos').load('/todos', function() {
-            $('.todo span').each(function() {
-                $(this).editable('/save', {
-                    event: 'dblclick'
+    var extractId = function(attr) {
+            var re = /^todo-([0-9]*)$/,
+                match = re.exec(attr),
+                id = match[1];
+            return id;
+        },
+        loadTodos = function() {
+            $('#todos').load('/todos', function() {
+                $('.todo span').each(function() {
+                    var attr = $(this).attr('id');
+
+                    $(this).editable('/todos/' + extractId(attr), {
+                        method: 'PUT',
+                        event: 'dblclick'
+                    });
                 });
             });
-        });
-    };
+        };
 
     loadTodos();
 
@@ -21,14 +30,11 @@ jQuery(document).ready(function($) {
     });
 
     $(document).on('click', '.todo a', function(e) {
-        var attr = $(this).prev().attr('id'),
-            re = /^todo-([0-9]*)$/,
-            match = re.exec(attr),
-            id = match[1];
+        var attr = $(this).prev().attr('id');
 
         $.ajax({
             type: 'DELETE',
-            url: '/todos/' + id,
+            url: '/todos/' + extractId(attr),
             success: loadTodos
         });
     });
