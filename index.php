@@ -12,15 +12,14 @@ $app = new Bullet\App(
     array(
         'template' => array(
             'path' => __DIR__ . '/templates/',
-            'path_layouts' => __DIR__ . '/templates/',
-            'auto_layout' => 'layout'
+            'path_layouts' => __DIR__ . '/templates/'
         )
     )
 );
 
 $app->path(
     '/', function () use ($app) {
-        return $app->template('todos');
+        return $app->template('todos')->layout('layout');
     }
 );
 
